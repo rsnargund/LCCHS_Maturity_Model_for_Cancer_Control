@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -627,7 +626,7 @@
     <section>
       <h2>Levels of maturation</h2>
       <div class="level-chips">
-        <span class="level-chip">1 Reactive</span>
+        <span class="level-chip">1 Initial</span>
         <span class="level-chip">2 Managed</span>
         <span class="level-chip">3 Defined</span>
         <span class="level-chip">4 Quantitatively Managed</span>
@@ -643,7 +642,7 @@
     <section>
       <h2>How to explore</h2>
       <p>Click a capability circle to fan out its components. Capabilities stay open as you add others; click again to collapse. Click the center circle to clear everything.</p>
-      <p class="about-version">Appendix B: Interactive visual representation of the maturity model &mdash; updated 8 November 2026</p>
+      <p class="about-version">Appendix B: Interactive Representation of the Maturity Framework and its Test Set &mdash; updated 8 November 2026</p>
     </section>
   </div>
 </details>
@@ -682,17 +681,17 @@
 
 <script>
 /* ================================================================
-   MODEL CONTENT — Appendix B: Interactive visual representation of the maturity model (characteristics from Appendix A)
+   MODEL CONTENT — Appendix B: Interactive Representation of the Maturity Framework and its Test Set (characteristics from Appendix A)
    Source: Appendix_TestSet_Aug232026.docx
    ================================================================ */
-const LEVELS = ["Reactive","Managed","Defined","Quantitatively Managed","Optimizing"];
+const LEVELS = ["Initial","Managed","Defined","Quantitatively Managed","Optimizing"];
 
 const DATA = {
   "model": {
     "name": "Maturing a Systems Approach for Cancer Control",
     "version": "Appendix B: [insert link] updated 8 November 2026",
     "definition": "An interactive visual representation of a maturity framework that defines five capabilities for the development of a systems approach to realise cancer control in health systems: Understanding, Data, Investment, Resources, and Execution.",
-    "objective": "An organization participating in cancer control can explore how maturation is described in each of the five capabilities, across the levels Reactive, Managed, Defined, Quantitatively Managed, and Optimizing. Tested characteristics are grouped into components within each capability; test sets probe these components. This representation is intended to support visualization of the framework and conversation about its capabilities and components; it is not an assessment tool."
+    "objective": "An organization participating in cancer control can explore how maturation is described in each of the five capabilities, across the levels Initial, Managed, Defined, Quantitatively Managed, and Optimizing. Tested characteristics are grouped into components within each capability; test sets probe these components. This representation is intended to support visualization of the framework and conversation about its capabilities and components; it is not an assessment tool."
   },
   "components": [
     {
@@ -702,12 +701,12 @@ const DATA = {
       "colorSoft": "#EDECF5",
       "name": "Understanding the problem and complexity",
       "short": "Understand the complete picture of the current state of cancer control",
-      "definition": "This capability examines the organization’s capability to understand the complete picture of the current state of cancer control within its domain. Five components are defined.",
+      "definition": "This capability examines the organization’s capability to understand the complete picture of the current state of cancer control within its domain. The spectrum of these elements represents the complexity of cancer control. For this capability, we define 5 components.",
       "subcomponents": [
         {
           "code": "1a",
           "name": "Cancer burden and complexity",
-          "fullName": "Understanding of the cancer burden and complexity",
+          "fullName": "Understanding of the cancer burden and the complexity",
           "question": "What is the accepted definition of cancer burden and complexity that drives improvements in cancer control in the system?",
           "characteristics": [
             "No accepted definition",
@@ -721,26 +720,26 @@ const DATA = {
           "code": "1b",
           "name": "Cancer risk factors",
           "fullName": "Understanding of the cancer risk factors",
-          "question": "What is the level of recognition of risk factors informing cancer control in the system?",
+          "question": "What is the level of recognition of risk factors for developing cancer informing cancer control in the system?",
           "characteristics": [
             "None",
             "Limited attention",
-            "Developing — selective attention to risk factors",
-            "Comprehensive — awareness to all known risk factors",
-            "Representative and evolving — assurance of equitable assessment across populations and continuous vigilance for potential risk factors"
+            "Developing – selective attention to risk factors",
+            "Comprehensive – awareness to all known risk factors",
+            "Representative and evolving – assurance of equitable assessment across populations and continuous vigilance for potential risk factors"
           ]
         },
         {
           "code": "1c",
           "name": "System capacity and gaps",
           "fullName": "Understanding of the cancer system capacity and gaps",
-          "question": "What is the level of awareness of the current capacity of cancer control in the system?",
+          "question": "What is the level of awareness of the current capacity of cancer control the system?",
           "characteristics": [
             "None",
-            "Limited — sporadic and fragmented understanding",
-            "Developing — understanding of current cancer services capacity",
-            "Comprehensive — almost all cancer-related services understood",
-            "Representative and equitable — attention to equitable distribution of services across populations and geographies, and new socio-technical developments impacting resources"
+            "Limited - sporadic and fragmented understanding",
+            "Developing – understanding of current cancer services capacity",
+            "Comprehensive – almost all cancer-related services understood",
+            "Representative and equitable –attention to equitable distribution of services across populations and geographies, and new socio-technical developments impacting resources"
           ]
         },
         {
@@ -749,11 +748,11 @@ const DATA = {
           "fullName": "Understanding of healthcare ecosystem",
           "question": "What is the level of capacity to understand and manage the complexity of the cancer control system?",
           "characteristics": [
-            "None — no system-level understanding; no scientific investment",
-            "Limited — defined responsibility for cancer control",
-            "Developing — awareness of need for cancer control planning activities",
-            "Comprehensive — need for coordinated plan with aligned incentives; advocacy for access and quality",
-            "Representative, equitable, and progressive — attention to real-time feedback on person-level experience; integration with other healthcare priorities; proactive measures and plans to reduce risk and burden"
+            "None – no system-level understanding; no scientific investment",
+            "Limited – defined responsibility for cancer control",
+            "Developing – awareness of need for cancer control planning activities;",
+            "Comprehensive – need for coordinated plan with aligned incentives; advocacy for access and quality",
+            "Representative, equitable, and progressive – attention to real-time feedback on person-level experience; integration with other healthcare priorities, proactive measures/plans to reduce risk/burden;"
           ]
         },
         {
@@ -762,11 +761,11 @@ const DATA = {
           "fullName": "Understanding of impact of science and technology",
           "question": "What is the level of understanding of potential of science and technology to advance cancer control?",
           "characteristics": [
-            "None — no interest in science to impact cancer control",
-            "Limited — aware of the potential of science to impact cancer control",
-            "Developing — aware of specific areas of science and technology to impact cancer control; emerging interest in basic, translational, and clinical cancer science",
-            "Comprehensive — awareness of need to engage in broad spectrum of scientific activities to advance cancer control",
-            "Progressive — awareness and surveillance of emerging scientific and technological innovations with potential to impact cancer control"
+            "None – no interest in science to impact cancer control",
+            "Limited – aware of the potential of science to impact cancer control",
+            "Developing – aware of specific areas of science and technology to impact cancer control; Emerging interest in basic, translational, and clinical cancer science;",
+            "Comprehensive – awareness of need to engage in broad spectrum of scientific activities to advance cancer control",
+            "Progressive – awareness and surveillance of emerging scientific and technological innovations with potential to impact cancer control"
           ]
         }
       ]
@@ -778,29 +777,29 @@ const DATA = {
       "colorSoft": "#E7F4F0",
       "name": "Developing Robust Data Supply Chains and Forecasting",
       "short": "Supply the data demanded for effective cancer control and forecast intervention impact",
-      "definition": "This capability examines the organization’s capability to supply the data demanded for effective cancer control. It also includes the capacity to use forecasting to inform interventions and investments. Five components are defined.",
+      "definition": "This capability examines the organization’s capability to supply the data demanded for effective cancer control. It also includes the capacity to use forecasting to inform interventions/investments. For this capability, we define 5 components.",
       "subcomponents": [
         {
           "code": "2a",
-          "name": "Data governance",
-          "fullName": "Data governance",
+          "name": "Data Governance",
+          "fullName": "Data Governance",
           "question": "How would you describe the data governance model operating in your setting?",
           "characteristics": [
             "No framework for data governance",
             "Distributed, project-level data governance",
-            "Institutional or system-level data governance policy",
+            "Institutional/system-level data governance policy",
             "Processes and policies operational for governance of data as an asset",
             "Defined responsibility for effective stewardship and evolution of data assets"
           ]
         },
         {
           "code": "2b",
-          "name": "Data management",
-          "fullName": "Data management",
+          "name": "Data Management",
+          "fullName": "Data Management",
           "question": "How would you rank maturity of your data management?",
           "characteristics": [
             "No data management processes",
-            "Ad-hoc or project-level data management processes",
+            "ad-hoc/project-level data management processes",
             "Defined and operational institutional-level data management processes",
             "Method and group responsible for data quality",
             "Data assets identified and inventoried for quality and security"
@@ -808,15 +807,15 @@ const DATA = {
         },
         {
           "code": "2c",
-          "name": "Data quality",
-          "fullName": "Data quality",
+          "name": "Data Quality",
+          "fullName": "Data Quality",
           "question": "What best describes the level of data quality available to inform the cancer control objectives?",
           "characteristics": [
             "No quality measures available for available data assets",
             "Some quality measures available for available data assets",
-            "Accuracy, completeness, consistency, and timeliness metrics available for data assets",
-            "Validity and duplication metrics available for data assets",
-            "Uniqueness and lineage metrics available for data assets"
+            "Accuracy, Completeness, Consistency, and Timeliness metrics available for data assets",
+            "Validity and Duplication metrics available for data assets",
+            "Uniqueness and Lineage metrics available for data assets"
           ]
         },
         {
@@ -829,13 +828,13 @@ const DATA = {
             "Projection of future incidence based on previous experience",
             "Modeling of resource requirements based on needs",
             "Counterfactual forecasting of impact of an intervention",
-            "Adoption of innovation facilitated by modelling and counterfactual forecasting of effects of new technologies, models of care, or financing incentives"
+            "Adoption of innovation facilitated by modelling and counterfactual forecasting of effects of new technologies / models of care / financing incentives"
           ]
         },
         {
           "code": "2e",
-          "name": "Risks and early warning",
-          "fullName": "Risks and early warning",
+          "name": "Risks and Early Warning",
+          "fullName": "Risks and Early Warning",
           "question": "What is the maturity of the organization in using data and forecasting to anticipate risks and provide early warning of challenges in cancer control capacity in the health system?",
           "characteristics": [
             "None",
@@ -854,8 +853,7 @@ const DATA = {
       "colorSoft": "#F4ECF0",
       "name": "Aligning Incentives and Investment Capability",
       "short": "Direct investment to reduce burden and optimise the value of cancer control programs",
-      "definition": "This capability examines the organization’s capability to direct investment in cancer control to support the goals of reducing burden and optimizing the value of cancer control programs.",
-      "sourceNote": "The capability overview states that four components are defined, but five components are listed and five corresponding test sets are provided. All five tested components are represented here.",
+      "definition": "This capability examines the organization’s capability to direct investment in cancer control to support the goals of reducing burden and optimizing the value of cancer control programs. For this capability, we define 5 components.",
       "subcomponents": [
         {
           "code": "3a",
@@ -865,7 +863,7 @@ const DATA = {
           "characteristics": [
             "No dedicated funding",
             "Partial dedicated funding",
-            "Sufficient funding levels to address annual expenses; uncertain sustainability",
+            "Sufficient funding levels to address annual expenses; Uncertain sustainability.",
             "Available multi-year funding for cancer control programs",
             "Funding aligned and adaptable to achieving cancer control goals"
           ]
@@ -873,20 +871,20 @@ const DATA = {
         {
           "code": "3b",
           "name": "Personal behaviour incentives",
-          "fullName": "Incentivization of personal investment and behavior",
+          "fullName": "Incentivization of personal investment/behavior",
           "question": "Which best describes the level of support for behavior incentivization to control cancer in the population?",
           "characteristics": [
             "No incentives or education programs",
             "Education programs for prevention behaviors",
-            "Dedicated behavior modification programs for vaccination, smoking cessation, and similar",
-            "Nudging programs — preferential rewards for behavior modification, including insurance rates and taxation",
-            "Programs adapted to high-risk and vulnerable populations; equitable and evolving"
+            "Dedicated behavior modification programs for vaccination, smoking cessation, etc.",
+            "Nudging Programs - preferential rewards for behavior modification – insurance rates; taxation",
+            "Programs adapted to high-risk and vulnerable populations; Equitable and evolving."
           ]
         },
         {
           "code": "3c",
           "name": "Service optimisation incentives",
-          "fullName": "Incentivization of optimization of services including value proposition",
+          "fullName": "Incentivization of Optimization of Services including value proposition",
           "question": "Which best describes the broad practice (i.e. it is common) for incentivizing improvements in system performance?",
           "characteristics": [
             "No performance-based incentives",
@@ -899,20 +897,20 @@ const DATA = {
         {
           "code": "3d",
           "name": "Financial protection",
-          "fullName": "Financial protection programs for individuals",
+          "fullName": "Financial Protection Programs for Individuals",
           "question": "What protections are in place to protect the individual from financial toxicity?",
           "characteristics": [
             "No protection",
-            "Some coverage of costs through not-for-profit or volunteer groups, or limited government initiatives",
+            "Some coverage of costs (not for profit/volunteer groups/limited gov’t initiatives)",
             "Partial coverage; access to health insurance that includes cancer care",
-            "Equitable access to health insurance, including financial protection for low income and disadvantaged groups",
-            "Safety net for impact of cancer beyond immediate expenditure, such as protection of employment or income continuity"
+            "Equitable access to health insurance (includes financial protection for low income and disadvantaged groups)",
+            "Safety net for impact of cancer beyond immediate expenditure (e.g. protection of employment/income continuity)"
           ]
         },
         {
           "code": "3e",
           "name": "Global policies and standards",
-          "fullName": "Adoption and alignment with global policies and standards",
+          "fullName": "Adoption/alignment with global policies, standards",
           "question": "What global treaties, policies and standards have been accepted and implemented to optimize cancer control activities?",
           "characteristics": [
             "None",
@@ -931,7 +929,7 @@ const DATA = {
       "colorSoft": "#E9F2EC",
       "name": "Resource Management",
       "short": "Secure the resources that enable cancer control",
-      "definition": "This capability examines the organization’s capability to secure resources to enable cancer control. Five components are defined.",
+      "definition": "This capability examines the organization’s capability to secure resources to enable cancer control. For this capability, we define 5 components.",
       "subcomponents": [
         {
           "code": "4a",
@@ -940,9 +938,9 @@ const DATA = {
           "question": "Which level best describes the level of capacity to manage human resources for cancer control?",
           "characteristics": [
             "Recognized absence of trained oncology health professionals (OHP) and public health experts",
-            "Few credentialled public health and OHPs — for example oncologists, nurses, technologists, medical physicists",
-            "Comprehensive public health and OHPs credentialled, subspecialty expertise and ancillary professions such as biomedical engineers",
-            "Public health and OHPs meeting population demands, maintenance of competence, robust education program and professions to meet new cancer control demands such as educators, data scientists, economists",
+            "Few credentialled public health and OHPs – e.g. oncologists, nurses, technologists, medical physicists",
+            "Comprehensive public health and OHPs credentialled, subspecialty expertise and ancillary professions (e.g. biomedical engineers)",
+            "Public health and OHPs meeting population demands, maintenance of competence, robust education program and professions to meet new cancer control demands (e.g. educators, data scientists, economists)",
             "Long-term human resource planning, optimized use, innovations in human resource role evolution and management"
           ]
         },
@@ -950,12 +948,12 @@ const DATA = {
           "code": "4b",
           "name": "Facilities, equipment, supply chain",
           "fullName": "Facilities, equipment, supply chain for drugs and technologies",
-          "question": "Describe the level of facilities and equipment resource management for cancer control.",
+          "question": "Describe the level of facilities and equipment resource management for cancer control?",
           "characteristics": [
             "No dedicated cancer facilities and/or equipment",
-            "Some dedicated cancer equipment or facilities",
+            "Some dedicated cancer equipment/facilities;",
             "Established programs for facilities and equipment resource management",
-            "Full spectrum of facilities; coordinated management and maintenance of resources",
+            "Full spectrum of facilities; Coordinated management and maintenance of resources",
             "Sustainable, multi-year support for resource distribution, maintenance and renewal"
           ]
         },
@@ -966,10 +964,10 @@ const DATA = {
           "question": "What is the level of adoption of digital technologies in cancer control?",
           "characteristics": [
             "No digital tools",
-            "Rudimentary availability of information technologies",
+            "Rudimentary availability of information technologies;",
             "Digital infrastructure in support of cancer control programs",
             "Integrated digital infrastructure aligned to system-centred cancer-control programs; health information interoperability",
-            "Secure, accessible, modern digital infrastructure aligned to support person-centered programs; dynamic and evolving with progress in technology and cancer control objectives"
+            "Secure, accessible, modern digital infrastructure aligned to support person-centered programs; Dynamic and evolving with progress in technology and cancer control objectives."
           ]
         },
         {
@@ -979,10 +977,10 @@ const DATA = {
           "question": "What is the current level of the organization’s capability to govern and lead in the pursuit of cancer control?",
           "characteristics": [
             "No formal governance structure",
-            "Emerging governance and leadership structure; advocacy",
-            "Mature leadership and governance structure; accountability for outcomes; demonstrated effectiveness",
-            "Governance and leadership formulating strategy, optimizing outcomes and managing risks; empowering public engagement in cancer control",
-            "People-centered engagement; leadership and governance responsive to changing demands of cancer control and emerging scientific evidence; public accountability for cancer control"
+            "Emerging governance and leadership structure; Advocacy.",
+            "Mature leadership and governance structure; Accountability for outcomes; Demonstrated effectiveness;",
+            "Governance and leadership formulating strategy, optimizing outcomes and managing risks; Empowering public engagement in cancer control.",
+            "People-centered engagement; Leadership and governance responsive to changing demands of cancer control and emerging scientific evidence. Public accountability for cancer control."
           ]
         },
         {
@@ -992,7 +990,7 @@ const DATA = {
           "question": "Which best describes the organization’s capability to adapt to capacity requirements and secure resources for all to enable cancer control?",
           "characteristics": [
             "No shared resources",
-            "Some resource sharing within organization or facility; predominately static capacity",
+            "Some resource sharing within organization / facility; predominately static capacity",
             "Intentional resource sharing to improve efficient allocation and value proposition across limited networks",
             "Resource sharing to improve geo-spatial and timely access",
             "Resources networked to optimize equitable access and investment across broad networks"
@@ -1007,67 +1005,67 @@ const DATA = {
       "colorSoft": "#EFEEF7",
       "name": "Execution Capability",
       "short": "Execute programs and achieve the desired goals of cancer control",
-      "definition": "This capability examines the organization’s capability to execute programs and achieve desired goals of cancer control. Five components are defined.",
+      "definition": "This capability examines the organization’s capability to execute programs and achieve desired goals of cancer control. For this capability, we define 5 components.",
       "subcomponents": [
         {
           "code": "5a",
-          "name": "Orchestration of care",
-          "fullName": "Orchestration of care",
+          "name": "Orchestration of Care",
+          "fullName": "Orchestration of Care",
           "question": "Which best describes the level of cancer services / programs orchestration in your organization?",
           "characteristics": [
             "No orchestration of access to services or programs for cancer control",
             "Basic orchestration of provider centric services and programs",
-            "Some orchestration agencies or resources present; interdependence of all elements recognized and supported",
-            "For care, highly effective navigation support; for programs, self-service programs to facilitate orchestration and engagement",
+            "Some orchestration agencies/resources present; Interdependence of all elements recognized and supported",
+            "For care, highly effective navigation support; For programs, self-service programs to facilitate orchestration and engagement",
             "Programs designed to facilitate orchestration of all program elements in support of person-centered cancer control"
           ]
         },
         {
           "code": "5b",
-          "name": "Assurance of quality and safety",
-          "fullName": "Assurance of quality and safety",
+          "name": "Assurance of Quality and Safety",
+          "fullName": "Assurance of Quality and Safety",
           "question": "Select the level that best reflects the current state of assuring quality and safety of cancer control efforts.",
           "characteristics": [
             "No documented quality and safety initiatives",
             "Emerging selected quality and safety initiatives",
-            "Expectation of quality and safety practices in all programs or elements",
+            "Expectation of quality and safety practices in all programs / elements",
             "The existence and documentation of a comprehensive quality and safety program; external accreditation",
             "Progressive and adaptive quality and safety initiatives to support the evolving nature of cancer control"
           ]
         },
         {
           "code": "5c",
-          "name": "Intra- and inter-organizational network",
-          "fullName": "Intra- and inter-organizational network",
+          "name": "Intra / Inter-organizational Network",
+          "fullName": "Intra / Inter-organizational Network",
           "question": "What best describes the organization’s capability to execute programs and achieve desired goals of cancer control through networking and collaboration?",
           "characteristics": [
             "No internal or external collaborations",
-            "Emerging collaboration among sub-groups or individuals",
-            "Multidisciplinary, multiprofessional practice — institutional collaboration",
-            "Communities of practice or programs to share expertise; cross institution partnerships",
+            "Emerging collaboration among sub-groups/individuals",
+            "Multidisciplinary, multiprofessional practice – institutional collaboration",
+            "Communities of practice/programs to share expertise, cross institution partnerships",
             "Fully networked cancer control capacity to optimize access to expertise, resources, and practice"
           ]
         },
         {
           "code": "5d",
-          "name": "Capacity to change and innovate",
-          "fullName": "Capacity to change and innovate",
+          "name": "Capacity to Change and Innovate",
+          "fullName": "Capacity to Change and Innovate",
           "question": "What is the level of system capacity to assure change and implement innovations?",
           "characteristics": [
             "No defined change management or innovation capability",
-            "Awareness of need for change management or innovation",
-            "Educational programs to promote change management or innovation, including evolving roles and responsibilities",
-            "Dedicated change management capability and resources; proactive engagement focused on cancer control agenda",
+            "Awareness of need for change management/innovation",
+            "Educational programs to promote change management/innovation, including evolving roles and responsibilities",
+            "Dedicated change management capability/resources; Proactive engagement focused on cancer control agenda.",
             "Anticipating change and proactive implementation of innovation"
           ]
         },
         {
           "code": "5e",
-          "name": "Support for research",
-          "fullName": "Support for research",
+          "name": "Support for Research",
+          "fullName": "Support for Research",
           "question": "Select the level that best reflects the research capacity in the organization to support cancer control.",
           "characteristics": [
-            "No support for research, or research not in the mandate",
+            "No support for research/not in the mandate",
             "Sporadic research activities",
             "Formalized research programs operating under a mandate",
             "Structured, quality-assured and realized research programs",
