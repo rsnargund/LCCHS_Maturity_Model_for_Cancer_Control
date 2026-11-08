@@ -1,0 +1,1744 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maturing a Systems Approach for Cancer Control | Framework Explorer</title>
+<style>
+  :root{
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:Calibri,'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif;
+
+    --paper:#ffffff;
+    --canvas:#fafafa;
+    --ink:#111111;
+    --ink-soft:#444444;
+    --ink-faint:#6d6d6d;
+    --line:#d7d7dc;
+    --line-strong:#8d8d95;
+
+    /* Lancet Commission logo palette */
+    --indigo:#2C2A63;
+    --indigo-deep:#1E1C48;
+    --teal:#2F8F79;
+    --mauve:#94627C;
+    --green:#437F5F;
+    --peri:#6B67A8;
+
+    --accent:#2C2A63;
+    --accent-dark:#1E1C48;
+    --accent-soft:#EDECF5;
+
+    --shadow:0 6px 20px rgba(28,26,72,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  .site-header{
+    flex:0 0 auto;
+    min-height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    padding:13px 30px 12px;
+    background:var(--paper);
+    border-top:7px solid var(--indigo);
+    border-bottom:1px solid var(--ink);
+    z-index:30;
+    position:relative;
+  }
+  .site-header::after{
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:3px;
+    background:linear-gradient(90deg,
+      var(--indigo) 0 20%, var(--teal) 20% 40%, var(--mauve) 40% 60%,
+      var(--green) 60% 80%, var(--peri) 80% 100%);
+  }
+  .brand{display:flex; align-items:baseline; gap:16px; min-width:0; flex:1 1 auto;}
+  .brand .eyebrow{
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    white-space:nowrap;
+  }
+  .brand h1{
+    font-family:var(--serif);
+    font-size:25px;
+    font-weight:700;
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-.01em;
+  }
+  .controls{display:flex; gap:10px; align-items:center; flex:0 0 auto;}
+  button.ctrl{
+    font-family:var(--sans);
+    font-size:16px;
+    font-weight:700;
+    background:var(--paper);
+    border:1px solid var(--ink);
+    color:var(--ink);
+    padding:9px 15px;
+    cursor:pointer;
+    transition:background .15s ease,color .15s ease,border-color .15s ease;
+  }
+  button.ctrl:hover{border-color:var(--indigo); color:var(--indigo); background:var(--accent-soft);}
+  button.ctrl:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
+  button.ctrl.expanded{background:var(--indigo); border-color:var(--indigo); color:#fff;}
+
+  /* ---------- about strip ---------- */
+  .about-strip{
+    flex:0 0 auto;
+    background:#fff;
+    border-bottom:1px solid var(--ink);
+    z-index:29;
+  }
+  .about-strip summary{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    min-height:46px;
+    padding:10px 30px;
+    cursor:pointer;
+    list-style:none;
+    font-size:16px;
+    line-height:1.35;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .about-strip summary::-webkit-details-marker{display:none;}
+  .about-strip summary::after{
+    content:'Minimize \2212';
+    color:var(--indigo);
+    font-size:15px;
+    white-space:nowrap;
+  }
+  .about-strip:not([open]) summary::after{content:'Expand +';}
+  .about-kicker{
+    color:var(--teal);
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    margin-right:10px;
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.25fr 1.1fr .95fr .8fr;
+    gap:26px;
+    padding:4px 30px 16px;
+    border-top:1px solid var(--line);
+  }
+  .about-grid section{min-width:0;}
+  .about-grid h2{
+    margin:8px 0 5px;
+    font:700 18px/1.25 var(--serif);
+    color:var(--ink);
+  }
+  .about-grid h2 + p + h2,
+  .about-grid p + h2{margin-top:22px;}
+  .about-grid p{
+    margin:0 0 7px;
+    font-size:16px;
+    line-height:1.45;
+    color:var(--ink-soft);
+  }
+  .about-grid strong{color:var(--ink);}
+  .about-version{font-size:14px !important; color:var(--ink-faint) !important;}
+  .level-chips{display:flex; flex-wrap:wrap; gap:5px; margin-top:2px;}
+  .level-chip{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.02em;
+    padding:3px 8px;
+    border:1px solid var(--line-strong);
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+
+  /* ---------- canvas ---------- */
+  main{flex:1; position:relative; min-height:0; background:var(--canvas);}
+  #viewport{
+    position:absolute; inset:0;
+    overflow:hidden;
+    cursor:grab;
+    background:
+      radial-gradient(circle at 50% 45%, #ffffff 0%, #f7f7fa 55%, #f1f1f5 100%);
+  }
+  #viewport.grabbing{cursor:grabbing;}
+  #canvas{position:absolute; top:0; left:0; transform-origin:0 0; will-change:transform;}
+  #connectorSvg{position:absolute; top:0; left:0; overflow:visible;}
+  #connectorSvg path{
+    stroke:#b8b8c2;
+    stroke-width:2;
+    fill:none;
+    stroke-linecap:round;
+    transition:stroke .2s ease,stroke-width .2s ease,opacity .2s ease;
+  }
+  #connectorSvg path.spoke{stroke-width:1.6; opacity:.45;}
+  #connectorSvg path.lit{stroke-width:3; opacity:1;}
+
+  .node{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    cursor:pointer;
+    transition:transform .16s ease;
+  }
+  .node:focus-visible{outline:none;}
+
+  /* hub — circle */
+  .node.hub .dot{
+    width:272px;
+    height:272px;
+    border-radius:50%;
+    background:var(--paper);
+    border:3px solid var(--indigo);
+    box-shadow:0 0 0 9px #fff, 0 0 0 10px var(--line), var(--shadow);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:34px 30px;
+  }
+  .node.hub .tag{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:9px;
+  }
+  .node.hub .hub-title{
+    font-family:var(--serif);
+    font-size:21px;
+    line-height:1.22;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .node.hub:hover .dot{border-color:var(--indigo-deep); box-shadow:0 0 0 9px #fff, 0 0 0 10px var(--indigo-deep), var(--shadow);}
+
+  /* capability — free-floating text, no circle */
+  .node.component .dot{
+    width:200px;
+    background:transparent;
+    border:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0;
+  }
+  .node.component .idx{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:var(--cap,var(--indigo));
+    margin-bottom:8px;
+    transition:color .15s ease;
+  }
+  .node.component .component-title{
+    font-family:var(--serif);
+    font-size:17.5px;
+    line-height:1.2;
+    font-weight:700;
+    color:var(--ink);
+    transition:color .15s ease;
+  }
+  .node.component:hover .component-title,
+  .node.component.active .component-title{
+    color:var(--cap,var(--indigo));
+    text-decoration:underline;
+    text-underline-offset:4px;
+  }
+  .node.component.active .component-title{font-size:18px;}
+  .node:focus-visible .dot{outline:3px solid var(--teal); outline-offset:4px;}
+
+  /* component — free text, no box */
+  .node.sub{
+    width:204px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .22s ease;
+  }
+  .node.sub.show{opacity:1; pointer-events:auto;}
+  .node.sub .dot{
+    background:transparent;
+    border:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .node.sub .subcode{
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--cap,var(--indigo));
+    margin-bottom:3px;
+    transition:color .15s ease;
+  }
+  .node.sub .subtitle{
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.26;
+    font-weight:700;
+    color:var(--ink-soft);
+    transition:color .15s ease;
+  }
+  .node.sub:hover .subtitle,
+  .node.sub.active .subtitle{
+    color:var(--cap,var(--indigo));
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .node.sub.active .subtitle{font-size:17.5px;}
+  .node.sub:focus-visible .dot{outline:2px solid var(--teal); outline-offset:5px;}
+  .node.context-dim{opacity:.3 !important;}
+
+  /* ---------- breadcrumb ---------- */
+  .breadcrumb{
+    position:absolute;
+    top:18px;
+    left:26px;
+    z-index:20;
+    max-width:calc(100% - 60px);
+    font-size:15px;
+    line-height:1.35;
+    font-weight:600;
+    color:var(--ink-faint);
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    background:rgba(255,255,255,.96);
+    padding:10px 14px;
+    border:1px solid var(--line);
+    border-left:5px solid var(--indigo);
+  }
+  .breadcrumb .seg{color:var(--indigo); font-weight:700; cursor:pointer;}
+  .breadcrumb .seg.current{color:var(--ink); cursor:default;}
+  .breadcrumb .sep{color:var(--line-strong);}
+
+  /* ---------- zoom ---------- */
+  .zoomctl{
+    position:absolute;
+    right:26px;
+    bottom:26px;
+    z-index:20;
+    display:flex;
+    gap:8px;
+  }
+  .zoomctl button{
+    width:42px; height:42px;
+    background:var(--paper);
+    border:1px solid var(--ink);
+    color:var(--ink);
+    font-size:23px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .15s ease,color .15s ease,border-color .15s ease;
+  }
+  .zoomctl button:hover{border-color:var(--indigo); color:var(--indigo); background:var(--accent-soft);}
+  #minimap{display:none;}
+
+  /* ---------- panel ---------- */
+  aside.panel{
+    position:absolute;
+    top:18px;
+    right:22px;
+    bottom:18px;
+    width:500px;
+    background:var(--paper);
+    border:1px solid var(--ink);
+    border-top:7px solid var(--accent);
+    box-shadow:var(--shadow);
+    z-index:25;
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  aside.panel.is-open{display:flex;}
+  .panel-tabs{
+    flex:0 0 auto;
+    min-height:47px;
+    display:flex;
+    align-items:stretch;
+    border-bottom:1px solid var(--ink);
+    background:#fff;
+  }
+  .panel-tab{
+    min-width:110px;
+    border:0;
+    border-right:1px solid var(--line);
+    background:#fff;
+    color:var(--ink-soft);
+    padding:11px 18px;
+    font:700 16px/1 var(--sans);
+    cursor:pointer;
+  }
+  .panel-tab.active{color:var(--accent-dark); box-shadow:inset 0 -5px 0 var(--accent);}
+  .panel-close{
+    margin-left:auto;
+    width:47px;
+    border:0;
+    border-left:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    font:400 28px/1 var(--sans);
+    cursor:pointer;
+  }
+  .panel-close:hover,.panel-tab:hover{background:var(--accent-soft);}
+  .panel-tab-shell{flex:1 1 auto; min-height:0; position:relative; overflow:hidden;}
+  .panel-tab-view{position:absolute; inset:0; overflow:hidden;}
+  .panel-tab-view.hidden{display:none;}
+  .panel-content,.glossary-content{
+    height:100%;
+    overflow-y:auto;
+    padding:25px 29px 30px;
+  }
+  .panel-content::-webkit-scrollbar,.glossary-content::-webkit-scrollbar{width:10px;}
+  .panel-content::-webkit-scrollbar-thumb,.glossary-content::-webkit-scrollbar-thumb{
+    background:var(--line-strong); border:2px solid var(--paper);
+  }
+  .panel-eyebrow{
+    font-size:14px;
+    line-height:1.3;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  .panel-eyebrow .kind-dot{width:9px; height:9px; border-radius:50%; background:currentColor;}
+  .panel h2{
+    font-family:var(--serif);
+    font-size:29px;
+    font-weight:700;
+    line-height:1.16;
+    margin:0 0 20px;
+    letter-spacing:-.015em;
+  }
+  .section-label{
+    font-size:14px;
+    line-height:1.3;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink);
+    margin:24px 0 9px;
+    padding-bottom:6px;
+    border-bottom:2px solid var(--accent);
+  }
+  .panel p{font-size:16.5px; line-height:1.56; margin:0; color:var(--ink-soft);}
+  .panel hr{border:none; border-top:1px solid var(--line-strong); margin:24px 0;}
+  .question-text{
+    font-family:var(--serif);
+    font-size:19px !important;
+    line-height:1.5 !important;
+    color:var(--ink) !important;
+  }
+  .inline-code{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:32px;
+    height:26px;
+    margin-right:9px;
+    padding:0 7px;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--sans);
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.04em;
+    line-height:1;
+    vertical-align:2px;
+  }
+  .sub-list{display:flex; flex-direction:column; gap:11px;}
+  .sub-item{
+    padding:14px 16px 15px;
+    background:#fbfbfd;
+    border:1px solid var(--line);
+    border-left:5px solid var(--accent);
+    cursor:pointer;
+    transition:background .15s ease,border-color .15s ease;
+  }
+  .sub-item:hover,.sub-item.active{border-color:var(--accent); background:var(--accent-soft);}
+  .sub-item .sub-name{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:18px;
+    line-height:1.25;
+    color:var(--ink);
+    margin-bottom:5px;
+  }
+  .sub-item .sub-def{font-size:15.5px; color:var(--ink-soft); line-height:1.5; margin:0;}
+  .sub-item.back .sub-name{color:var(--accent-dark);}
+  .characteristic-explainer{
+    margin:17px 0 20px;
+    padding:14px 16px;
+    background:var(--accent-soft);
+    border-left:5px solid var(--accent);
+  }
+  .characteristic-explainer p{font-size:16px; line-height:1.53; color:var(--ink-soft);}
+  .characteristic-explainer strong{color:var(--accent-dark);}
+  .characteristic-list{display:flex; flex-direction:column; gap:9px;}
+  .characteristic-row{
+    display:grid;
+    grid-template-columns:46px 1fr;
+    border:1px solid var(--line);
+    background:#fbfbfd;
+  }
+  .characteristic-num{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--accent);
+    color:#fff;
+    font-size:20px;
+    font-weight:700;
+  }
+  .characteristic-copy{padding:11px 14px 13px;}
+  .characteristic-level{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+  .characteristic-copy p{font-size:15.5px; line-height:1.5;}
+  .source-note,.panel-note{
+    margin-top:18px;
+    padding:13px 15px;
+    border-left:5px solid var(--accent);
+    background:var(--accent-soft);
+    color:var(--ink-soft);
+    font-size:15.5px;
+    line-height:1.5;
+  }
+  .glossary-intro{margin:0 0 18px; color:var(--ink-soft); font-size:16px; line-height:1.5;}
+  .glossary-entry{
+    padding:0 0 17px;
+    margin:0 0 17px;
+    border-bottom:1px solid var(--line);
+    scroll-margin-top:18px;
+  }
+  .glossary-entry:last-child{border-bottom:0;}
+  .glossary-entry h3{margin:0 0 6px; font:700 20px/1.2 var(--serif); color:var(--ink);}
+  .glossary-entry p{margin:0; font-size:15.5px; line-height:1.52; color:var(--ink-soft);}
+  .glossary-entry.glossary-focus{
+    margin-left:-12px; margin-right:-12px;
+    padding:12px 12px 17px;
+    background:var(--accent-soft);
+    border-left:5px solid var(--accent);
+  }
+  .glossary-link{
+    display:inline;
+    border:0;
+    border-bottom:1px dotted var(--accent);
+    padding:0;
+    background:transparent;
+    color:var(--accent-dark);
+    font:inherit;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .glossary-link:hover{background:var(--accent-soft);}
+
+  body.panel-open .breadcrumb{max-width:calc(100% - 560px);}
+  body.panel-open .zoomctl{right:540px;}
+
+  @media (max-width:1200px){
+    .about-grid{grid-template-columns:1fr 1fr;}
+    aside.panel{width:430px;}
+    body.panel-open .breadcrumb{max-width:calc(100% - 490px);}
+    body.panel-open .zoomctl{right:470px;}
+  }
+  @media (max-width:880px){
+    .site-header{align-items:flex-start; flex-wrap:wrap; padding:12px 18px;}
+    .brand{flex-direction:column; gap:4px;}
+    .brand h1{font-size:22px;}
+    .site-header .controls{width:100%;}
+    .about-strip summary{padding:10px 18px;}
+    .about-grid{grid-template-columns:1fr; gap:8px; padding:4px 18px 15px;}
+    aside.panel{left:14px; right:14px; top:auto; bottom:14px; height:50vh; width:auto;}
+    .breadcrumb{left:14px; right:14px; max-width:none;}
+    body.panel-open .breadcrumb{max-width:none;}
+    body.panel-open .zoomctl{right:14px; bottom:calc(50vh + 24px);}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <span class="eyebrow">Lancet Commission on Cancer and Health Systems</span>
+    <h1 id="modelTitle">Model Explorer</h1>
+  </div>
+  <div class="controls">
+    <button class="ctrl" id="expandAllBtn" type="button">Expand all</button>
+    <button class="ctrl" id="resetBtn" type="button">Reset view</button>
+  </div>
+</header>
+
+<details class="about-strip" id="aboutModel" open>
+  <summary>
+    <span>
+      <span class="about-kicker">About the maturity framework</span>
+      Purpose, maturity levels, test sets, and how to explore
+    </span>
+  </summary>
+  <div class="about-grid">
+    <section>
+      <h2>What this visual representation shows</h2>
+      <p>Five capabilities that support the development of a <strong>systems approach</strong> to realising cancer control in health systems: <strong>Understanding</strong>, <strong>Data</strong>, <strong>Investment</strong>, <strong>Resources</strong>, and <strong>Execution</strong>.</p>
+      <h2>Who this framework is for</h2>
+      <p>Organizations participating in cancer control who seek to mature capabilities using a systems approach.</p>
+    </section>
+    <section>
+      <h2>Levels of maturation</h2>
+      <div class="level-chips">
+        <span class="level-chip">1 Initial</span>
+        <span class="level-chip">2 Managed</span>
+        <span class="level-chip">3 Defined</span>
+        <span class="level-chip">4 Quantitatively Managed</span>
+        <span class="level-chip">5 Optimizing</span>
+      </div>
+      <p style="margin-top:8px">Tested characteristics are grouped into components of maturity within each capability, which simplifies understanding.</p>
+    </section>
+    <section>
+      <h2>Intended use</h2>
+      <p>This page is an <strong>interactive visual representation of the maturity model</strong>. It is not an assessment tool and does not score or rate organizations. It is intended to support visualization of the framework, to invite conversation about the capabilities and components, and to provide definitions of key terms.</p>
+      <p>Test sets comprise questions that can guide the maturation of capabilities required for cancer control. The test set questions and characteristics at each maturity level are presented in Appendix A and are shown here for reference and discussion.</p>
+    </section>
+    <section>
+      <h2>How to explore</h2>
+      <p>Click a capability circle to fan out its components. Capabilities stay open as you add others; click again to collapse. Click the center circle to clear everything.</p>
+      <p class="about-version">Appendix B: Interactive Representation of the Maturity Framework and its Test Set &mdash; updated 8 November 2026</p>
+    </section>
+  </div>
+</details>
+
+<main>
+  <div id="viewport">
+    <div id="canvas">
+      <svg id="connectorSvg"></svg>
+      <div id="nodeLayer"></div>
+    </div>
+  </div>
+  <div class="breadcrumb" id="breadcrumb"></div>
+  <svg id="minimap"></svg>
+  <div class="zoomctl">
+    <button id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button>
+    <button id="zoomOut" title="Zoom out" aria-label="Zoom out">&minus;</button>
+  </div>
+  <aside class="panel" id="panel" aria-hidden="true">
+    <div class="panel-tabs" role="tablist" aria-label="Information panel">
+      <button class="panel-tab active" id="detailsTabBtn" type="button" role="tab"
+        aria-selected="true" aria-controls="detailsTab">Details</button>
+      <button class="panel-tab" id="glossaryTabBtn" type="button" role="tab"
+        aria-selected="false" aria-controls="glossaryTab">Glossary</button>
+      <button class="panel-close" id="panelCloseBtn" type="button" aria-label="Close information panel">&times;</button>
+    </div>
+    <div class="panel-tab-shell">
+      <section class="panel-tab-view" id="detailsTab" role="tabpanel" aria-labelledby="detailsTabBtn">
+        <div class="panel-content" id="panelContent"></div>
+      </section>
+      <section class="panel-tab-view hidden" id="glossaryTab" role="tabpanel" aria-labelledby="glossaryTabBtn">
+        <div class="glossary-content" id="glossaryContent"></div>
+      </section>
+    </div>
+  </aside>
+</main>
+
+<script>
+/* ================================================================
+   MODEL CONTENT — Appendix B: Interactive Representation of the Maturity Framework and its Test Set (characteristics from Appendix A)
+   Source: Appendix_TestSet_Aug232026.docx
+   ================================================================ */
+const LEVELS = ["Initial","Managed","Defined","Quantitatively Managed","Optimizing"];
+
+const DATA = {
+  "model": {
+    "name": "Maturing a Systems Approach for Cancer Control",
+    "version": "Appendix B: [insert link] updated 8 November 2026",
+    "definition": "An interactive visual representation of a maturity framework that defines five capabilities for the development of a systems approach to realise cancer control in health systems: Understanding, Data, Investment, Resources, and Execution.",
+    "objective": "An organization participating in cancer control can explore how maturation is described in each of the five capabilities, across the levels Initial, Managed, Defined, Quantitatively Managed, and Optimizing. Tested characteristics are grouped into components within each capability; test sets probe these components. This representation is intended to support visualization of the framework and conversation about its capabilities and components; it is not an assessment tool."
+  },
+  "components": [
+    {
+      "id": "understanding",
+      "number": "1",
+      "color": "#2C2A63",
+      "colorSoft": "#EDECF5",
+      "name": "Understanding the problem and complexity",
+      "short": "Understand the complete picture of the current state of cancer control",
+      "definition": "This capability examines the organization’s capability to understand the complete picture of the current state of cancer control within its domain. The spectrum of these elements represents the complexity of cancer control. For this capability, we define 5 components.",
+      "subcomponents": [
+        {
+          "code": "1a",
+          "name": "Cancer burden and complexity",
+          "fullName": "Understanding of the cancer burden and the complexity",
+          "question": "What is the accepted definition of cancer burden and complexity that drives improvements in cancer control in the system?",
+          "characteristics": [
+            "No accepted definition",
+            "Incidence by cancer type and mortality",
+            "Stage, multidisciplinary approach, clinical outcomes",
+            "Molecular subtypes, lines of treatment, patient reported outcomes",
+            "Attention to new evidence and lived experience"
+          ]
+        },
+        {
+          "code": "1b",
+          "name": "Cancer risk factors",
+          "fullName": "Understanding of the cancer risk factors",
+          "question": "What is the level of recognition of risk factors for developing cancer informing cancer control in the system?",
+          "characteristics": [
+            "None",
+            "Limited attention",
+            "Developing – selective attention to risk factors",
+            "Comprehensive – awareness to all known risk factors",
+            "Representative and evolving – assurance of equitable assessment across populations and continuous vigilance for potential risk factors"
+          ]
+        },
+        {
+          "code": "1c",
+          "name": "System capacity and gaps",
+          "fullName": "Understanding of the cancer system capacity and gaps",
+          "question": "What is the level of awareness of the current capacity of cancer control the system?",
+          "characteristics": [
+            "None",
+            "Limited - sporadic and fragmented understanding",
+            "Developing – understanding of current cancer services capacity",
+            "Comprehensive – almost all cancer-related services understood",
+            "Representative and equitable –attention to equitable distribution of services across populations and geographies, and new socio-technical developments impacting resources"
+          ]
+        },
+        {
+          "code": "1d",
+          "name": "Healthcare ecosystem",
+          "fullName": "Understanding of healthcare ecosystem",
+          "question": "What is the level of capacity to understand and manage the complexity of the cancer control system?",
+          "characteristics": [
+            "None – no system-level understanding; no scientific investment",
+            "Limited – defined responsibility for cancer control",
+            "Developing – awareness of need for cancer control planning activities;",
+            "Comprehensive – need for coordinated plan with aligned incentives; advocacy for access and quality",
+            "Representative, equitable, and progressive – attention to real-time feedback on person-level experience; integration with other healthcare priorities, proactive measures/plans to reduce risk/burden;"
+          ]
+        },
+        {
+          "code": "1e",
+          "name": "Impact of science and technology",
+          "fullName": "Understanding of impact of science and technology",
+          "question": "What is the level of understanding of potential of science and technology to advance cancer control?",
+          "characteristics": [
+            "None – no interest in science to impact cancer control",
+            "Limited – aware of the potential of science to impact cancer control",
+            "Developing – aware of specific areas of science and technology to impact cancer control; Emerging interest in basic, translational, and clinical cancer science;",
+            "Comprehensive – awareness of need to engage in broad spectrum of scientific activities to advance cancer control",
+            "Progressive – awareness and surveillance of emerging scientific and technological innovations with potential to impact cancer control"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "number": "2",
+      "color": "#2F8F79",
+      "colorSoft": "#E7F4F0",
+      "name": "Developing Robust Data Supply Chains and Forecasting",
+      "short": "Supply the data demanded for effective cancer control and forecast intervention impact",
+      "definition": "This capability examines the organization’s capability to supply the data demanded for effective cancer control. It also includes the capacity to use forecasting to inform interventions/investments. For this capability, we define 5 components.",
+      "subcomponents": [
+        {
+          "code": "2a",
+          "name": "Data Governance",
+          "fullName": "Data Governance",
+          "question": "How would you describe the data governance model operating in your setting?",
+          "characteristics": [
+            "No framework for data governance",
+            "Distributed, project-level data governance",
+            "Institutional/system-level data governance policy",
+            "Processes and policies operational for governance of data as an asset",
+            "Defined responsibility for effective stewardship and evolution of data assets"
+          ]
+        },
+        {
+          "code": "2b",
+          "name": "Data Management",
+          "fullName": "Data Management",
+          "question": "How would you rank maturity of your data management?",
+          "characteristics": [
+            "No data management processes",
+            "ad-hoc/project-level data management processes",
+            "Defined and operational institutional-level data management processes",
+            "Method and group responsible for data quality",
+            "Data assets identified and inventoried for quality and security"
+          ]
+        },
+        {
+          "code": "2c",
+          "name": "Data Quality",
+          "fullName": "Data Quality",
+          "question": "What best describes the level of data quality available to inform the cancer control objectives?",
+          "characteristics": [
+            "No quality measures available for available data assets",
+            "Some quality measures available for available data assets",
+            "Accuracy, Completeness, Consistency, and Timeliness metrics available for data assets",
+            "Validity and Duplication metrics available for data assets",
+            "Uniqueness and Lineage metrics available for data assets"
+          ]
+        },
+        {
+          "code": "2d",
+          "name": "Forecasting of intervention impact",
+          "fullName": "Forecasting of impact of interventions to guide cancer control",
+          "question": "What is the maturity of the organization in use of computational approaches for forecasting and data-driven design of cancer control interventions?",
+          "characteristics": [
+            "None",
+            "Projection of future incidence based on previous experience",
+            "Modeling of resource requirements based on needs",
+            "Counterfactual forecasting of impact of an intervention",
+            "Adoption of innovation facilitated by modelling and counterfactual forecasting of effects of new technologies / models of care / financing incentives"
+          ]
+        },
+        {
+          "code": "2e",
+          "name": "Risks and Early Warning",
+          "fullName": "Risks and Early Warning",
+          "question": "What is the maturity of the organization in using data and forecasting to anticipate risks and provide early warning of challenges in cancer control capacity in the health system?",
+          "characteristics": [
+            "None",
+            "Projection of risks based on previous patterns and experience",
+            "Data-informed monitoring of trends for potential future problems",
+            "Forecasting-informed alert of emerging problems facing cancer control",
+            "Transparent early warning system for significant impending failures in cancer control"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "investment",
+      "number": "3",
+      "color": "#94627C",
+      "colorSoft": "#F4ECF0",
+      "name": "Aligning Incentives and Investment Capability",
+      "short": "Direct investment to reduce burden and optimise the value of cancer control programs",
+      "definition": "This capability examines the organization’s capability to direct investment in cancer control to support the goals of reducing burden and optimizing the value of cancer control programs. For this capability, we define 5 components.",
+      "subcomponents": [
+        {
+          "code": "3a",
+          "name": "Dedicated funding",
+          "fullName": "Dedicated funding for cancer control programs",
+          "question": "Is there dedicated funding for cancer control?",
+          "characteristics": [
+            "No dedicated funding",
+            "Partial dedicated funding",
+            "Sufficient funding levels to address annual expenses; Uncertain sustainability.",
+            "Available multi-year funding for cancer control programs",
+            "Funding aligned and adaptable to achieving cancer control goals"
+          ]
+        },
+        {
+          "code": "3b",
+          "name": "Personal behaviour incentives",
+          "fullName": "Incentivization of personal investment/behavior",
+          "question": "Which best describes the level of support for behavior incentivization to control cancer in the population?",
+          "characteristics": [
+            "No incentives or education programs",
+            "Education programs for prevention behaviors",
+            "Dedicated behavior modification programs for vaccination, smoking cessation, etc.",
+            "Nudging Programs - preferential rewards for behavior modification – insurance rates; taxation",
+            "Programs adapted to high-risk and vulnerable populations; Equitable and evolving."
+          ]
+        },
+        {
+          "code": "3c",
+          "name": "Service optimisation incentives",
+          "fullName": "Incentivization of Optimization of Services including value proposition",
+          "question": "Which best describes the broad practice (i.e. it is common) for incentivizing improvements in system performance?",
+          "characteristics": [
+            "No performance-based incentives",
+            "Some funding aligned to efficiency",
+            "Linkage of funding to quality",
+            "Demonstrated funding aligned to value-based care",
+            "Increased funding aligned to stakeholder experience and outcomes"
+          ]
+        },
+        {
+          "code": "3d",
+          "name": "Financial protection",
+          "fullName": "Financial Protection Programs for Individuals",
+          "question": "What protections are in place to protect the individual from financial toxicity?",
+          "characteristics": [
+            "No protection",
+            "Some coverage of costs (not for profit/volunteer groups/limited gov’t initiatives)",
+            "Partial coverage; access to health insurance that includes cancer care",
+            "Equitable access to health insurance (includes financial protection for low income and disadvantaged groups)",
+            "Safety net for impact of cancer beyond immediate expenditure (e.g. protection of employment/income continuity)"
+          ]
+        },
+        {
+          "code": "3e",
+          "name": "Global policies and standards",
+          "fullName": "Adoption/alignment with global policies, standards",
+          "question": "What global treaties, policies and standards have been accepted and implemented to optimize cancer control activities?",
+          "characteristics": [
+            "None",
+            "Partial implementation of tobacco control, cancer registration",
+            "Ratification of FCTC, contributing data to IARC",
+            "Full implementation of FCTC, full cancer registration, partial engagement in WHO cancer initiatives",
+            "Demonstrated reduction in tobacco use, engagement in all WHO cancer initiatives with demonstrated progress"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resources",
+      "number": "4",
+      "color": "#437F5F",
+      "colorSoft": "#E9F2EC",
+      "name": "Resource Management",
+      "short": "Secure the resources that enable cancer control",
+      "definition": "This capability examines the organization’s capability to secure resources to enable cancer control. For this capability, we define 5 components.",
+      "subcomponents": [
+        {
+          "code": "4a",
+          "name": "Human resources",
+          "fullName": "Human resources",
+          "question": "Which level best describes the level of capacity to manage human resources for cancer control?",
+          "characteristics": [
+            "Recognized absence of trained oncology health professionals (OHP) and public health experts",
+            "Few credentialled public health and OHPs – e.g. oncologists, nurses, technologists, medical physicists",
+            "Comprehensive public health and OHPs credentialled, subspecialty expertise and ancillary professions (e.g. biomedical engineers)",
+            "Public health and OHPs meeting population demands, maintenance of competence, robust education program and professions to meet new cancer control demands (e.g. educators, data scientists, economists)",
+            "Long-term human resource planning, optimized use, innovations in human resource role evolution and management"
+          ]
+        },
+        {
+          "code": "4b",
+          "name": "Facilities, equipment, supply chain",
+          "fullName": "Facilities, equipment, supply chain for drugs and technologies",
+          "question": "Describe the level of facilities and equipment resource management for cancer control?",
+          "characteristics": [
+            "No dedicated cancer facilities and/or equipment",
+            "Some dedicated cancer equipment/facilities;",
+            "Established programs for facilities and equipment resource management",
+            "Full spectrum of facilities; Coordinated management and maintenance of resources",
+            "Sustainable, multi-year support for resource distribution, maintenance and renewal"
+          ]
+        },
+        {
+          "code": "4c",
+          "name": "Digital infrastructure",
+          "fullName": "Digital infrastructure",
+          "question": "What is the level of adoption of digital technologies in cancer control?",
+          "characteristics": [
+            "No digital tools",
+            "Rudimentary availability of information technologies;",
+            "Digital infrastructure in support of cancer control programs",
+            "Integrated digital infrastructure aligned to system-centred cancer-control programs; health information interoperability",
+            "Secure, accessible, modern digital infrastructure aligned to support person-centered programs; Dynamic and evolving with progress in technology and cancer control objectives."
+          ]
+        },
+        {
+          "code": "4d",
+          "name": "Governance, leadership, risk",
+          "fullName": "Governance, leadership, risk management",
+          "question": "What is the current level of the organization’s capability to govern and lead in the pursuit of cancer control?",
+          "characteristics": [
+            "No formal governance structure",
+            "Emerging governance and leadership structure; Advocacy.",
+            "Mature leadership and governance structure; Accountability for outcomes; Demonstrated effectiveness;",
+            "Governance and leadership formulating strategy, optimizing outcomes and managing risks; Empowering public engagement in cancer control.",
+            "People-centered engagement; Leadership and governance responsive to changing demands of cancer control and emerging scientific evidence. Public accountability for cancer control."
+          ]
+        },
+        {
+          "code": "4e",
+          "name": "Dynamic networks of resources",
+          "fullName": "Dynamic networks of resources",
+          "question": "Which best describes the organization’s capability to adapt to capacity requirements and secure resources for all to enable cancer control?",
+          "characteristics": [
+            "No shared resources",
+            "Some resource sharing within organization / facility; predominately static capacity",
+            "Intentional resource sharing to improve efficient allocation and value proposition across limited networks",
+            "Resource sharing to improve geo-spatial and timely access",
+            "Resources networked to optimize equitable access and investment across broad networks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "execution",
+      "number": "5",
+      "color": "#6B67A8",
+      "colorSoft": "#EFEEF7",
+      "name": "Execution Capability",
+      "short": "Execute programs and achieve the desired goals of cancer control",
+      "definition": "This capability examines the organization’s capability to execute programs and achieve desired goals of cancer control. For this capability, we define 5 components.",
+      "subcomponents": [
+        {
+          "code": "5a",
+          "name": "Orchestration of Care",
+          "fullName": "Orchestration of Care",
+          "question": "Which best describes the level of cancer services / programs orchestration in your organization?",
+          "characteristics": [
+            "No orchestration of access to services or programs for cancer control",
+            "Basic orchestration of provider centric services and programs",
+            "Some orchestration agencies/resources present; Interdependence of all elements recognized and supported",
+            "For care, highly effective navigation support; For programs, self-service programs to facilitate orchestration and engagement",
+            "Programs designed to facilitate orchestration of all program elements in support of person-centered cancer control"
+          ]
+        },
+        {
+          "code": "5b",
+          "name": "Assurance of Quality and Safety",
+          "fullName": "Assurance of Quality and Safety",
+          "question": "Select the level that best reflects the current state of assuring quality and safety of cancer control efforts.",
+          "characteristics": [
+            "No documented quality and safety initiatives",
+            "Emerging selected quality and safety initiatives",
+            "Expectation of quality and safety practices in all programs / elements",
+            "The existence and documentation of a comprehensive quality and safety program; external accreditation",
+            "Progressive and adaptive quality and safety initiatives to support the evolving nature of cancer control"
+          ]
+        },
+        {
+          "code": "5c",
+          "name": "Intra / Inter-organizational Network",
+          "fullName": "Intra / Inter-organizational Network",
+          "question": "What best describes the organization’s capability to execute programs and achieve desired goals of cancer control through networking and collaboration?",
+          "characteristics": [
+            "No internal or external collaborations",
+            "Emerging collaboration among sub-groups/individuals",
+            "Multidisciplinary, multiprofessional practice – institutional collaboration",
+            "Communities of practice/programs to share expertise, cross institution partnerships",
+            "Fully networked cancer control capacity to optimize access to expertise, resources, and practice"
+          ]
+        },
+        {
+          "code": "5d",
+          "name": "Capacity to Change and Innovate",
+          "fullName": "Capacity to Change and Innovate",
+          "question": "What is the level of system capacity to assure change and implement innovations?",
+          "characteristics": [
+            "No defined change management or innovation capability",
+            "Awareness of need for change management/innovation",
+            "Educational programs to promote change management/innovation, including evolving roles and responsibilities",
+            "Dedicated change management capability/resources; Proactive engagement focused on cancer control agenda.",
+            "Anticipating change and proactive implementation of innovation"
+          ]
+        },
+        {
+          "code": "5e",
+          "name": "Support for Research",
+          "fullName": "Support for Research",
+          "question": "Select the level that best reflects the research capacity in the organization to support cancer control.",
+          "characteristics": [
+            "No support for research/not in the mandate",
+            "Sporadic research activities",
+            "Formalized research programs operating under a mandate",
+            "Structured, quality-assured and realized research programs",
+            "Comprehensive research aligned to a long-term strategy of cancer control and realizing impact"
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const GLOSSARY = [
+  {
+    id:"burden",
+    term:"Cancer burden",
+    aliases:["cancer burden", "burden"],
+    definition:"The multidimensional and longitudinal impact of cancer from the perspectives of patients and caregivers, health systems and providers, and populations. It encompasses epidemiology (including incidence, mortality, and prevalence), symptoms, time demands, logistical challenges, financial strain, effects on functioning in society, and intergenerational impacts. Together, these dimensions extend beyond conventional cancer control measures to capture the wider effects of cancer over time. (See the report of the Lancet Commission on Cancer And Health Systems)"
+  },
+  {
+    id:"lived-experience",
+    term:"Lived experience",
+    aliases:["lived experience"],
+    definition:"The first-hand, longitudinal experience of people living with cancer, their families, and caregivers, including physical, psychosocial, emotional, financial, and practical dimensions. Lived experience represents a form of expertise that informs the understanding of cancer burden and should contribute to setting priorities, shaping policies, and developing and evaluating cancer control programs."
+  },
+  {
+    id:"risk-factors",
+    term:"Risk factors for developing cancer",
+    aliases:["risk factors for developing cancer", "risk factors", "risk factor"],
+    definition:"Factors that increase the likelihood of developing cancer, organised into categories including environmental exposures (e.g., air, water, and food), social determinants (e.g., wealth and education), personal behaviours (e.g., tobacco and alcohol use), and exposure to infectious agents."
+  },
+  {
+    id:"ecosystem",
+    term:"Health system and cancer control ecosystem",
+    aliases:["health system and cancer control ecosystem", "healthcare ecosystem", "cancer control ecosystem", "ecosystem"],
+    definition:"All organisations, services, professionals, technologies, and policies that people and programs must navigate and that collectively shape cancer control within a broader social, economic, and political context."
+  },
+  {
+    id:"data-governance",
+    term:"Data governance",
+    aliases:["data governance"],
+    definition:"The frameworks, policies, and responsibilities that govern how data are collected, secured, shared, and used, protecting privacy and building trust while enabling participation and informing decisions."
+  },
+  {
+    id:"data-quality",
+    term:"Data quality",
+    aliases:["data quality"],
+    definition:"The fitness of data for cancer-control decisions, including accuracy, completeness (depth and coverage), consistency, timeliness, availability, freedom from duplication, and interpretability. These characteristics are assessed relative to the problem set and the needs of the stakeholders using the data."
+  },
+  {
+    id:"forecasting",
+    term:"Forecasting",
+    aliases:["counterfactual forecasting", "forecasting"],
+    definition:"The use of models, such as microsimulation, to project the likely impact of interventions and policies, including alternative scenarios and economic evaluation. It supports anticipatory rather than reactive planning, and depends on data quality and local context."
+  },
+  {
+    id:"early-warning",
+    term:"Early warning",
+    aliases:["early warning"],
+    definition:"Data-driven signals that give advance notice of impending failures in the system."
+  },
+  {
+    id:"financial-toxicity",
+    term:"Financial toxicity",
+    aliases:["financial toxicity"],
+    definition:"The financial hardship that cancer and its care place on patients and households, including healthcare expenditure (insurance and out-of-pocket costs), lost work or income, and impoverishment. These effects may extend to families, caregivers, and subsequent generations. It is one dimension of cancer burden."
+  },
+  {
+    id:"value-based-care",
+    term:"Value-based care",
+    aliases:["value-based care", "value based care"],
+    definition:"Care and investment oriented to outcomes that matter to people, such as cure, symptom relief, quality of life, and financial protection, while improving efficiency and processes and reducing waste rather than focusing on the volume of activity. Value reflects outcomes achieved relative to the resources used."
+  },
+  {
+    id:"fctc",
+    term:"WHO Framework Convention on Tobacco Control (FCTC)",
+    aliases:["who framework convention on tobacco control", "framework convention on tobacco control", "fctc"],
+    definition:"A global treaty on tobacco control, cited as an example of successful international prevention policy. Here, ratification and implementation are used as markers of alignment with established global cancer-control objectives."
+  },
+  {
+    id:"iarc",
+    term:"International Agency for Research on Cancer (IARC)",
+    aliases:["international agency for research on cancer", "iarc"],
+    definition:"The specialized cancer agency of the World Health Organization, dedicated to promoting international collaboration in cancer research, identifying causes of cancer, and informing prevention and early detection strategies. IARC also supports global cancer surveillance through collaboration with population-based cancer registries to monitor cancer incidence and trends. Here, contributing registry data to IARC is used as a marker of participation in global cancer surveillance."
+  },
+  {
+    id:"interoperability",
+    term:"Health information interoperability",
+    aliases:["health information interoperability", "interoperability"],
+    definition:"The ability of digital systems and data standards to exchange and use health information across services, programs, organisations, and borders."
+  },
+  {
+    id:"orchestration",
+    term:"Orchestration",
+    aliases:["orchestration"],
+    definition:"The timely coordination and organised provision of program elements so they work together to execute cancer control effectively. Unlike cooperation among autonomous participants, orchestration generally involves a coordinating function that guides the sequence and interaction of activities. Orchestration needs to occur at multiple scales including improving patient/family/provider experience, greater efficiency and timely access, and in implementing needed change."
+  },
+  {
+    id:"person-centered",
+    term:"Person-centered cancer control",
+    aliases:["person-centered cancer control", "person-centered", "person centred", "person-centred"],
+    definition:"Programs and systems designed around the needs, preferences, and lived experiences of people with cancer, their families, and caregivers, with their meaningful involvement in care decisions and program design. It emphasizes timely, coordinated care, shared decision-making, supportive and survivorship services, and financial support, while improving outcomes, experiences, and efficient use of resources. It also extends to the pursuit of cancer control through prevention."
+  },
+  {
+    id:"dynamic-networks",
+    term:"Dynamic networks of resources",
+    aliases:["dynamic networks of resources", "dynamic resource networks", "dynamic networks"],
+    definition:"Regional and institutional networks and communities of practice that pool and share specialised resources, such as transplantation and complex surgery, to improve access and use across geographies. With a focus on addressing burden they allow systems to collectively steward constrained resources through coordination."
+  }
+];
+
+/* ================================================================
+   Mind-map rendering + pan/zoom engine
+   ================================================================ */
+const viewport = document.getElementById('viewport');
+const canvas = document.getElementById('canvas');
+const svg = document.getElementById('connectorSvg');
+const nodeLayer = document.getElementById('nodeLayer');
+const panel = document.getElementById('panel');
+const panelContent = document.getElementById('panelContent');
+const aboutModel = document.getElementById('aboutModel');
+const expandAllBtn = document.getElementById('expandAllBtn');
+const detailsTabBtn = document.getElementById('detailsTabBtn');
+const glossaryTabBtn = document.getElementById('glossaryTabBtn');
+const panelCloseBtn = document.getElementById('panelCloseBtn');
+const detailsTab = document.getElementById('detailsTab');
+const glossaryTab = document.getElementById('glossaryTab');
+const glossaryContent = document.getElementById('glossaryContent');
+const breadcrumb = document.getElementById('breadcrumb');
+const minimap = document.getElementById('minimap');
+const resetBtn = document.getElementById('resetBtn');
+document.getElementById('modelTitle').textContent = DATA.model.name;
+
+const BASE_ACCENT = { main:'#2C2A63', dark:'#1E1C48', soft:'#EDECF5' };
+
+// ---- virtual coordinate space ----
+const VW = 2400, VH = 2400;
+const HUB = { x: VW/2, y: VH/2 };
+const HUB_R = 100;            // hub circle radius
+const CAP_ORBIT = 350;        // capability distance from hub
+const SPOKE = 240;            // component distance from its capability
+const FAN = 130 * Math.PI/180;// angular spread of a capability's components
+const SUB_HW = 102, SUB_HH = 30;
+
+let cam = { x:0, y:0, scale:0.55 };
+const SCALE_MIN = 0.24, SCALE_MAX = 2.4;
+let activeComponent = null, activeSub = null;
+let activePanelEntity = null;
+let expandedCapabilities = new Set();
+
+// ---- positions ----
+const compPos = {};
+const subPos = {};
+DATA.components.forEach((comp, i) => {
+  const angle = -Math.PI/2 + i * (2*Math.PI/DATA.components.length);
+  compPos[comp.id] = {
+    x: HUB.x + CAP_ORBIT*Math.cos(angle),
+    y: HUB.y + CAP_ORBIT*Math.sin(angle),
+    angle
+  };
+  const subs = comp.subcomponents || [];
+  const step = subs.length > 1 ? FAN/(subs.length-1) : 0;
+  subPos[comp.id] = subs.map((s, j) => {
+    // Each component radiates outward from its own capability, forming a
+    // fan that opens away from the hub — the "starburst" arrangement.
+    const a = angle + (j - (subs.length-1)/2) * step;
+    return {
+      x: compPos[comp.id].x + SPOKE*Math.cos(a),
+      y: compPos[comp.id].y + SPOKE*Math.sin(a)
+    };
+  });
+});
+
+// ---- DOM nodes ----
+function makeNode(kind, innerHTML){
+  const el = document.createElement('div');
+  el.className = 'node ' + kind;
+  el.tabIndex = 0;
+  el.innerHTML = `<div class="dot">${innerHTML||''}</div>`;
+  el.addEventListener('keydown', e => {
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); el.click(); }
+  });
+  return el;
+}
+
+const hubEl = makeNode('hub', `<span class="tag">Framework</span><span class="hub-title">${DATA.model.name}</span>`);
+hubEl.style.left = HUB.x+'px'; hubEl.style.top = HUB.y+'px';
+hubEl.addEventListener('click', e => { e.stopPropagation(); selectModel(); });
+nodeLayer.appendChild(hubEl);
+
+const compEls = {};
+const subEls = {};
+const capBounds = {}; // measured half-width/half-height of each capability's rendered text box
+DATA.components.forEach((comp, i) => {
+  const p = compPos[comp.id];
+  const el = makeNode('component',
+    `<span class="idx">Capability ${comp.number}</span><span class="component-title">${comp.name}</span>`);
+  el.style.left = p.x+'px'; el.style.top = p.y+'px';
+  el.style.setProperty('--cap', comp.color);
+  el.style.setProperty('--cap-soft', comp.colorSoft);
+  el.setAttribute('aria-label', `Capability ${comp.number}: ${comp.name}`);
+  el.addEventListener('click', e => { e.stopPropagation(); selectComponent(comp.id); });
+  nodeLayer.appendChild(el);
+  compEls[comp.id] = el;
+
+  subEls[comp.id] = (comp.subcomponents||[]).map((sub, j) => {
+    const sp = subPos[comp.id][j];
+    const sEl = makeNode('sub',
+      `<span class="subcode">${sub.code}</span><span class="subtitle">${sub.name}</span>`);
+    sEl.setAttribute('aria-label', `${sub.code}: ${sub.name}`);
+    sEl.style.left = sp.x+'px'; sEl.style.top = sp.y+'px';
+    sEl.style.setProperty('--cap', comp.color);
+    sEl.addEventListener('click', e => { e.stopPropagation(); selectSub(comp.id, j); });
+    nodeLayer.appendChild(sEl);
+    return sEl;
+  });
+});
+
+// ---- measure actual rendered size of each capability label ----
+// (titles wrap to different numbers of lines, so a fixed box can't be assumed)
+function measureCapBounds(){
+  DATA.components.forEach(comp => {
+    const dot = compEls[comp.id].querySelector('.dot');
+    capBounds[comp.id] = {
+      hw: dot.offsetWidth/2 || 100,
+      hh: dot.offsetHeight/2 || 34
+    };
+  });
+}
+measureCapBounds();
+
+// ---- connectors ----
+function curvedPath(x1,y1,x2,y2,bend){
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len, ny=dx/len;
+  const cx=mx+nx*len*bend, cy=my+ny*len*bend;
+  return `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`;
+}
+function circleBoundary(cx,cy,tx,ty,r){
+  const dx=tx-cx, dy=ty-cy, d=Math.hypot(dx,dy)||1;
+  return { x:cx+dx/d*r, y:cy+dy/d*r };
+}
+function textBoundary(cx,cy,tx,ty,hw,hh,gap){
+  // Stop the spoke just outside the label's bounding box.
+  const dx=tx-cx, dy=ty-cy;
+  const sx=Math.abs(dx)>0.0001 ? hw/Math.abs(dx) : Infinity;
+  const sy=Math.abs(dy)>0.0001 ? hh/Math.abs(dy) : Infinity;
+  const s=Math.min(sx,sy);
+  const bx=cx+dx*s, by=cy+dy*s;
+  const d=Math.hypot(tx-bx,ty-by)||1;
+  return { x:bx+(tx-bx)/d*gap, y:by+(ty-by)/d*gap };
+}
+function drawConnectors(){
+  svg.setAttribute('width', VW); svg.setAttribute('height', VH);
+  svg.innerHTML = '';
+  DATA.components.forEach((comp, i) => {
+    const p = compPos[comp.id];
+    const start = circleBoundary(HUB.x,HUB.y,p.x,p.y,HUB_R);
+    const end = textBoundary(p.x,p.y,HUB.x,HUB.y,capBounds[comp.id].hw,capBounds[comp.id].hh,8);
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', curvedPath(start.x,start.y,end.x,end.y, i%2===0?0.05:-0.05));
+    if(comp.id===activeComponent || expandedCapabilities.has(comp.id)){
+      path.style.stroke = comp.color;
+    }
+    if(comp.id===activeComponent) path.classList.add('lit');
+    svg.appendChild(path);
+
+    if(expandedCapabilities.has(comp.id)){
+      subPos[comp.id].forEach((sp,j) => {
+        const a = textBoundary(p.x,p.y,sp.x,sp.y,capBounds[comp.id].hw,capBounds[comp.id].hh,8);
+        const b = textBoundary(sp.x,sp.y,p.x,p.y,SUB_HW,SUB_HH,8);
+        const p2 = document.createElementNS('http://www.w3.org/2000/svg','path');
+        p2.setAttribute('d', curvedPath(a.x,a.y,b.x,b.y, j%2===0?0.05:-0.05));
+        p2.classList.add('spoke');
+        p2.style.stroke = comp.color;
+        if(comp.id===activeComponent && (activeSub===null || j===activeSub)) p2.classList.add('lit');
+        svg.appendChild(p2);
+      });
+    }
+  });
+}
+drawConnectors();
+
+// ---- camera ----
+function applyCam(){
+  canvas.style.transform = `translate(${cam.x}px, ${cam.y}px) scale(${cam.scale})`;
+}
+function focusArea(){
+  const mobile = viewport.clientWidth <= 880;
+  const panelIsOpen = panel.classList.contains('is-open');
+  const panelSpace = (panelIsOpen && !mobile) ? (viewport.clientWidth <= 1200 ? 455 : 530) : 0;
+  return {
+    width: mobile ? viewport.clientWidth : Math.max(400, viewport.clientWidth-panelSpace),
+    height: (mobile && panelIsOpen) ? Math.max(280, viewport.clientHeight*0.48) : viewport.clientHeight,
+    cx: mobile ? viewport.clientWidth/2 : Math.max(200, (viewport.clientWidth-panelSpace)/2),
+    cy: (mobile && panelIsOpen) ? Math.max(150, viewport.clientHeight*0.24) : viewport.clientHeight/2
+  };
+}
+function visibleGraphBounds(){
+  let minX=HUB.x-HUB_R, maxX=HUB.x+HUB_R;
+  let minY=HUB.y-HUB_R, maxY=HUB.y+HUB_R;
+  const include=(x,y,hw,hh)=>{
+    minX=Math.min(minX,x-hw); maxX=Math.max(maxX,x+hw);
+    minY=Math.min(minY,y-hh); maxY=Math.max(maxY,y+hh);
+  };
+  DATA.components.forEach(comp=>{
+    const p=compPos[comp.id];
+    include(p.x,p.y,capBounds[comp.id].hw,capBounds[comp.id].hh);
+    if(expandedCapabilities.has(comp.id)){
+      subPos[comp.id].forEach(sp=>include(sp.x,sp.y,SUB_HW,SUB_HH));
+    }
+  });
+  return {minX,maxX,minY,maxY};
+}
+function fitVisibleGraph({animate=true,duration=480}={}){
+  const bounds=visibleGraphBounds();
+  const area=focusArea();
+  const mobile=viewport.clientWidth<=880;
+  const pad={ left:mobile?20:40, right:mobile?20:40, top:mobile?74:92, bottom:mobile?30:42 };
+  const usableW=Math.max(200,area.width-pad.left-pad.right);
+  const usableH=Math.max(200,area.height-pad.top-pad.bottom);
+  const bw=Math.max(1,bounds.maxX-bounds.minX);
+  const bh=Math.max(1,bounds.maxY-bounds.minY);
+  const scale=Math.max(SCALE_MIN,Math.min(SCALE_MAX,Math.min(usableW/bw,usableH/bh)*.96));
+  const graphCx=(bounds.minX+bounds.maxX)/2;
+  const graphCy=(bounds.minY+bounds.maxY)/2;
+  const areaLeft=area.cx-area.width/2;
+  const areaTop=area.cy-area.height/2;
+  const target={
+    scale,
+    x:(areaLeft+pad.left+usableW/2)-graphCx*scale,
+    y:(areaTop+pad.top+usableH/2)-graphCy*scale
+  };
+  if(!animate){ cam=target; applyCam(); return; }
+  const start={...cam};
+  const t0=performance.now();
+  function step(t){
+    const p=Math.min(1,(t-t0)/duration);
+    const e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+    cam.x=start.x+(target.x-start.x)*e;
+    cam.y=start.y+(target.y-start.y)*e;
+    cam.scale=start.scale+(target.scale-start.scale)*e;
+    applyCam();
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function syncSubVisibility(){
+  Object.entries(subEls).forEach(([id,els])=>{
+    els.forEach(el=>el.classList.toggle('show',expandedCapabilities.has(id)));
+  });
+}
+function updateExpandAllButton(){
+  const allOpen=DATA.components.every(c=>expandedCapabilities.has(c.id));
+  expandAllBtn.textContent=allOpen?'Collapse all':'Expand all';
+  expandAllBtn.classList.toggle('expanded',allOpen);
+}
+
+// ---- pan ----
+let dragging=false, dragStart=null, camStart=null;
+viewport.addEventListener('pointerdown', e => {
+  if(e.target.closest('.node')) return;
+  dragging=true;
+  dragStart={x:e.clientX,y:e.clientY};
+  camStart={...cam};
+  viewport.classList.add('grabbing');
+  viewport.setPointerCapture(e.pointerId);
+});
+viewport.addEventListener('pointermove', e => {
+  if(!dragging) return;
+  cam.x=camStart.x+(e.clientX-dragStart.x);
+  cam.y=camStart.y+(e.clientY-dragStart.y);
+  applyCam();
+});
+function endDrag(){ if(dragging){ dragging=false; viewport.classList.remove('grabbing'); } }
+viewport.addEventListener('pointerup', endDrag);
+viewport.addEventListener('pointerleave', endDrag);
+
+// ---- wheel zoom ----
+viewport.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect=viewport.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  const vx=(mx-cam.x)/cam.scale, vy=(my-cam.y)/cam.scale;
+  const newScale=Math.max(SCALE_MIN,Math.min(SCALE_MAX,cam.scale*(1-e.deltaY*0.0016)));
+  cam.x=mx-vx*newScale; cam.y=my-vy*newScale; cam.scale=newScale;
+  applyCam();
+}, {passive:false});
+
+// ---- pinch ----
+const pointers=new Map();
+let pinchStartDist=null, pinchStartScale=null, pinchCenter=null;
+viewport.addEventListener('pointerdown', e => pointers.set(e.pointerId,{x:e.clientX,y:e.clientY}));
+viewport.addEventListener('pointermove', e => {
+  if(!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pointers.size===2){
+    const pts=[...pointers.values()];
+    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+    const rect=viewport.getBoundingClientRect();
+    const cxS=(pts[0].x+pts[1].x)/2-rect.left, cyS=(pts[0].y+pts[1].y)/2-rect.top;
+    if(pinchStartDist===null){
+      pinchStartDist=dist; pinchStartScale=cam.scale;
+      pinchCenter={vx:(cxS-cam.x)/cam.scale, vy:(cyS-cam.y)/cam.scale};
+    } else {
+      const ns=Math.max(SCALE_MIN,Math.min(SCALE_MAX,pinchStartScale*(dist/pinchStartDist)));
+      cam.scale=ns; cam.x=cxS-pinchCenter.vx*ns; cam.y=cyS-pinchCenter.vy*ns;
+      applyCam();
+    }
+  }
+});
+function clearPointer(e){ pointers.delete(e.pointerId); if(pointers.size<2) pinchStartDist=null; }
+viewport.addEventListener('pointerup', clearPointer);
+viewport.addEventListener('pointercancel', clearPointer);
+viewport.addEventListener('pointerleave', clearPointer);
+
+function centerOnKeepPoint(newScale){
+  const cx=viewport.clientWidth/2, cy=viewport.clientHeight/2;
+  const vx=(cx-cam.x)/cam.scale, vy=(cy-cam.y)/cam.scale;
+  cam.scale=newScale; cam.x=cx-vx*newScale; cam.y=cy-vy*newScale;
+  applyCam();
+}
+document.getElementById('zoomIn').addEventListener('click',()=>centerOnKeepPoint(Math.min(SCALE_MAX,cam.scale*1.25)));
+document.getElementById('zoomOut').addEventListener('click',()=>centerOnKeepPoint(Math.max(SCALE_MIN,cam.scale*0.8)));
+
+// ---- panel plumbing ----
+function setPanelAccent(comp){
+  const c = comp ? {main:comp.color, dark:comp.color, soft:comp.colorSoft} : BASE_ACCENT;
+  panel.style.setProperty('--accent', c.main);
+  panel.style.setProperty('--accent-dark', c.dark);
+  panel.style.setProperty('--accent-soft', c.soft);
+}
+function setPanelTab(tab){
+  const glossary = tab==='glossary';
+  detailsTab.classList.toggle('hidden',glossary);
+  glossaryTab.classList.toggle('hidden',!glossary);
+  detailsTabBtn.classList.toggle('active',!glossary);
+  glossaryTabBtn.classList.toggle('active',glossary);
+  detailsTabBtn.setAttribute('aria-selected',String(!glossary));
+  glossaryTabBtn.setAttribute('aria-selected',String(glossary));
+}
+function openPanel(){
+  panel.classList.add('is-open');
+  panel.setAttribute('aria-hidden','false');
+  document.body.classList.add('panel-open');
+}
+function closePanel(){
+  panel.classList.remove('is-open');
+  panel.setAttribute('aria-hidden','true');
+  document.body.classList.remove('panel-open');
+  activePanelEntity=null;
+}
+function escapeHTML(value){
+  const el=document.createElement('div');
+  el.textContent=String(value ?? '');
+  return el.innerHTML;
+}
+function glossaryRichText(value){
+  const source=String(value ?? '');
+  const records=[];
+  GLOSSARY.forEach(item=>item.aliases.forEach(alias=>records.push({alias,id:item.id})));
+  records.sort((a,b)=>b.alias.length-a.alias.length);
+  const byAlias=new Map(records.map(r=>[r.alias.toLowerCase(),r.id]));
+  const pattern=new RegExp(records.map(r=>r.alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'gi');
+  let out='',last=0,m;
+  while((m=pattern.exec(source))!==null){
+    out+=escapeHTML(source.slice(last,m.index));
+    out+=`<button type="button" class="glossary-link" data-glossary="${byAlias.get(m[0].toLowerCase())}">${escapeHTML(m[0])}</button>`;
+    last=m.index+m[0].length;
+  }
+  out+=escapeHTML(source.slice(last));
+  return out;
+}
+function renderGlossary(){
+  glossaryContent.innerHTML = `
+    <div class="panel-eyebrow"><span class="kind-dot"></span>Glossary</div>
+    <h2>Key terms</h2>
+    <p class="glossary-intro">Linked terms in the Details tab open the corresponding entry here. These concise definitions support a shared understanding of terms used throughout the framework.</p>
+    ${GLOSSARY.map(item=>`
+      <article class="glossary-entry" id="glossary-${item.id}">
+        <h3>${escapeHTML(item.term)}</h3>
+        <p>${escapeHTML(item.definition)}</p>
+      </article>`).join('')}`;
+}
+function openGlossaryTerm(id){
+  openPanel(); renderGlossary(); setPanelTab('glossary');
+  window.setTimeout(()=>{
+    glossaryContent.querySelectorAll('.glossary-focus').forEach(el=>el.classList.remove('glossary-focus'));
+    const target=document.getElementById(`glossary-${id}`);
+    if(target){ target.classList.add('glossary-focus'); target.scrollIntoView({block:'start',behavior:'smooth'}); }
+  },30);
+}
+
+// ---- selection ----
+function clearActive(){
+  Object.values(compEls).forEach(el=>el.classList.remove('active','context-dim'));
+  Object.values(subEls).flat().forEach(el=>el.classList.remove('active','context-dim'));
+}
+function markActiveSelection(){
+  clearActive();
+  if(activeComponent && compEls[activeComponent]) compEls[activeComponent].classList.add('active');
+  if(activeComponent && activeSub!==null && subEls[activeComponent]?.[activeSub]){
+    subEls[activeComponent].forEach((el,j)=>el.classList.toggle('context-dim',j!==activeSub));
+    subEls[activeComponent][activeSub].classList.remove('context-dim');
+    subEls[activeComponent][activeSub].classList.add('active');
+  }
+}
+function selectModel(){
+  const togglingOff = activePanelEntity==='model' && panel.classList.contains('is-open');
+  expandedCapabilities.clear();
+  activeComponent=null; activeSub=null;
+  clearActive(); syncSubVisibility(); updateExpandAllButton();
+  updateBreadcrumb(); drawConnectors();
+  if(togglingOff){ closePanel(); fitVisibleGraph({animate:true}); return; }
+  activePanelEntity='model';
+  setPanelAccent(null);
+  renderPanel();
+  fitVisibleGraph({animate:true});
+}
+function selectComponent(id){
+  if(expandedCapabilities.has(id)){
+    expandedCapabilities.delete(id);
+    if(activeComponent===id){
+      activeComponent=null; activeSub=null; activePanelEntity=null;
+      clearActive(); closePanel();
+    }
+    syncSubVisibility(); updateExpandAllButton(); updateBreadcrumb();
+    drawConnectors(); fitVisibleGraph({animate:true});
+    return;
+  }
+  expandedCapabilities.add(id);
+  activeComponent=id; activeSub=null;
+  activePanelEntity=`capability:${id}`;
+  setPanelAccent(DATA.components.find(c=>c.id===id));
+  syncSubVisibility(); updateExpandAllButton(); markActiveSelection();
+  drawConnectors(); renderPanel(); updateBreadcrumb();
+  window.setTimeout(()=>fitVisibleGraph({animate:true}),25);
+}
+function selectSub(compId,idx){
+  const entity=`component:${compId}:${idx}`;
+  const togglingOff = activePanelEntity===entity && panel.classList.contains('is-open');
+  expandedCapabilities.add(compId);
+  syncSubVisibility(); updateExpandAllButton();
+  if(togglingOff){
+    activePanelEntity=null; activeComponent=null; activeSub=null;
+    clearActive(); closePanel(); updateBreadcrumb();
+    drawConnectors(); fitVisibleGraph({animate:true});
+    return;
+  }
+  activeComponent=compId; activeSub=idx; activePanelEntity=entity;
+  setPanelAccent(DATA.components.find(c=>c.id===compId));
+  markActiveSelection(); drawConnectors(); renderPanel(); updateBreadcrumb();
+  window.setTimeout(()=>fitVisibleGraph({animate:true}),25);
+}
+function updateBreadcrumb(){
+  const comp=DATA.components.find(c=>c.id===activeComponent);
+  let html=`<span class="seg ${!comp?'current':''}" data-nav="model">${escapeHTML(DATA.model.name)}</span>`;
+  if(comp){
+    html+=` <span class="sep">&rsaquo;</span> <span class="seg ${activeSub===null?'current':''}" data-nav="comp">${escapeHTML(comp.name)}</span>`;
+    if(activeSub!==null) html+=` <span class="sep">&rsaquo;</span> <span class="seg current">${escapeHTML(comp.subcomponents[activeSub].name)}</span>`;
+  }
+  breadcrumb.innerHTML=html;
+  const m=breadcrumb.querySelector('[data-nav="model"]');
+  if(m && comp) m.onclick=selectModel;
+  const c=breadcrumb.querySelector('[data-nav="comp"]');
+  if(c && activeSub!==null) c.onclick=()=>selectComponent(activeComponent);
+}
+
+// ---- panel content ----
+function renderPanel(){
+  openPanel(); setPanelTab('details');
+  panelContent.innerHTML=buildPanelHTML();
+  panelContent.querySelectorAll('[data-goto]').forEach(el=>
+    el.addEventListener('click',()=>selectComponent(el.dataset.goto)));
+  panelContent.querySelectorAll('[data-sub]').forEach(el=>
+    el.addEventListener('click',()=>selectSub(activeComponent,parseInt(el.dataset.sub))));
+  panelContent.scrollTop=0;
+}
+function buildPanelHTML(){
+  if(!activeComponent){
+    return `
+      <div class="panel-eyebrow"><span class="kind-dot"></span>Framework overview</div>
+      <h2>${escapeHTML(DATA.model.name)}</h2>
+      <p>${escapeHTML(DATA.model.definition)}</p>
+      <div class="section-label">Test Set</div>
+      <p>${escapeHTML(DATA.model.objective)}</p>
+      <div class="section-label">Explore a capability</div>
+      <div class="sub-list">
+        ${DATA.components.map(c=>`
+          <div class="sub-item" data-goto="${c.id}">
+            <div class="sub-name"><span class="inline-code">${c.number}</span>${glossaryRichText(c.name)}</div>
+            <p class="sub-def">${glossaryRichText(c.short)}</p>
+          </div>`).join('')}
+      </div>
+      <div class="panel-note">${escapeHTML(DATA.model.version)}</div>`;
+  }
+  const comp=DATA.components.find(c=>c.id===activeComponent);
+  if(activeSub!==null){
+    const sub=comp.subcomponents[activeSub];
+    return `
+      <div class="panel-eyebrow"><span class="kind-dot"></span>Component ${escapeHTML(sub.code)} &middot; Capability ${escapeHTML(comp.number)}</div>
+      <h2>${glossaryRichText(sub.fullName || sub.name)}</h2>
+      <div class="section-label">Test ${escapeHTML(sub.code)}</div>
+      <p class="question-text">${glossaryRichText(sub.question)}</p>
+      <div class="characteristic-explainer">
+        <p>Test sets describe characteristics of an organization at each maturity level. They are presented here to support discussion; this page does not assess or score maturity.</p>
+      </div>
+      <div class="section-label">Characteristics by Maturity Level</div>
+      <div class="characteristic-list">
+        ${sub.characteristics.map((description,i)=>`
+          <div class="characteristic-row">
+            <div class="characteristic-num">${i+1}</div>
+            <div class="characteristic-copy">
+              <p>${glossaryRichText(description)}</p>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${sub.note?`<div class="source-note"><strong>Draft note:</strong> ${glossaryRichText(sub.note)}</div>`:''}
+      <hr>
+      <div class="sub-item back" data-goto="${comp.id}">
+        <div class="sub-name">&larr; Back to ${escapeHTML(comp.name)}</div>
+        <p class="sub-def">${glossaryRichText(comp.definition)}</p>
+      </div>`;
+  }
+  return `
+    <div class="panel-eyebrow"><span class="kind-dot"></span>Capability ${escapeHTML(comp.number)}</div>
+    <h2>${glossaryRichText(comp.name)}</h2>
+    <div class="section-label">Capability definition</div>
+    <p>${glossaryRichText(comp.definition)}</p>
+    <div class="section-label">Components and test sets</div>
+    <div class="sub-list">
+      ${comp.subcomponents.map((s,i)=>`
+        <div class="sub-item" data-sub="${i}">
+          <div class="sub-name"><span class="inline-code">${escapeHTML(s.code)}</span>${glossaryRichText(s.fullName || s.name)}</div>
+          <p class="sub-def">${glossaryRichText(s.question)}</p>
+        </div>`).join('')}
+    </div>
+    ${comp.sourceNote?`<div class="source-note"><strong>Draft structure note:</strong> ${glossaryRichText(comp.sourceNote)}</div>`:''}`;
+}
+
+// ---- reset / controls ----
+function resetInterface({animate=true}={}){
+  expandedCapabilities.clear();
+  activeComponent=null; activeSub=null; activePanelEntity=null;
+  clearActive(); syncSubVisibility(); updateExpandAllButton();
+  closePanel(); setPanelTab('details'); setPanelAccent(null);
+  updateBreadcrumb(); drawConnectors(); fitVisibleGraph({animate});
+}
+resetBtn.addEventListener('click',()=>resetInterface({animate:true}));
+expandAllBtn.addEventListener('click',()=>{
+  const allOpen=DATA.components.every(c=>expandedCapabilities.has(c.id));
+  if(allOpen) expandedCapabilities.clear();
+  else DATA.components.forEach(c=>expandedCapabilities.add(c.id));
+  syncSubVisibility(); updateExpandAllButton();
+  drawConnectors(); fitVisibleGraph({animate:true});
+});
+detailsTabBtn.addEventListener('click',()=>setPanelTab('details'));
+glossaryTabBtn.addEventListener('click',()=>{ renderGlossary(); setPanelTab('glossary'); });
+panelCloseBtn.addEventListener('click',()=>{
+  activePanelEntity=null; activeComponent=null; activeSub=null;
+  clearActive(); closePanel(); updateBreadcrumb();
+  drawConnectors(); fitVisibleGraph({animate:true});
+});
+panel.addEventListener('click',event=>{
+  const link=event.target.closest('[data-glossary]');
+  if(link){ event.preventDefault(); event.stopPropagation(); openGlossaryTerm(link.dataset.glossary); }
+});
+aboutModel.addEventListener('toggle',()=>{
+  window.setTimeout(()=>fitVisibleGraph({animate:true,duration:350}),40);
+});
+new ResizeObserver(()=>fitVisibleGraph({animate:false})).observe(viewport);
+window.addEventListener('load',()=>{ renderGlossary(); resetInterface({animate:false}); });
+</script>
+</body>
+</html>
